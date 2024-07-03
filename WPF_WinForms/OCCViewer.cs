@@ -118,11 +118,11 @@ namespace IE_WPF_WinForms
             //List<Panel> panels = null;
 
             var points = new BiDictionary<int, (double,double,double)>();
-            var triangles = new List<(uint, uint, uint)>();
+            var triangles = new List<(int, int, int)>();
 
             try
             {
-                StreamReader sr = new StreamReader("C:\\Users\\ryaykiran\\Documents\\extended_geo_org_5_loyd.txt");
+                StreamReader sr = new StreamReader("C:\\Users\\ryaykiran\\Documents\\box_stiffened.txt");
                 //StreamReader sr = new StreamReader("C:\\Users\\ryaykiran\\Documents\\box_stiffened.txt");
                 line = sr.ReadLine();
                 int numOfPlates = Convert.ToInt32(sr.ReadLine());
@@ -191,10 +191,10 @@ namespace IE_WPF_WinForms
                         {
                             mappedIndices[k - 1] = pointIndexMap[Convert.ToInt32(triaArr[k])];
                         }
-                        (uint,uint,uint) pidx;
-                        pidx.Item1 = (uint)mappedIndices[0];
-                        pidx.Item2 = (uint)mappedIndices[1];
-                        pidx.Item3 = (uint)mappedIndices[2];
+                        (int,int,int) pidx;
+                        pidx.Item1 = mappedIndices[0];
+                        pidx.Item2 = mappedIndices[1];
+                        pidx.Item3 = mappedIndices[2];
 
                         triangles.Add(pidx);
                     }
@@ -216,6 +216,20 @@ namespace IE_WPF_WinForms
             }
             finally
             {
+            }
+
+            View.SetPointsCount(points.Count);
+            for(int i=0; i< points.Count; i++ )
+            {
+                var pt = points[i];
+                View.SetPoint(i, pt.Item1, pt.Item2, pt.Item3);
+            }
+
+            View.SetTrianglesCount(triangles.Count);
+            for (int i = 0; i < triangles.Count; i++)
+            {
+                var tr = triangles[i];
+                View.SetTriangle(i, tr.Item1+1, tr.Item2+1, tr.Item3 + 1);
             }
         }
 

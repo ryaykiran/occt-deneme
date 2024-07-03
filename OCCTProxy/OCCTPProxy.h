@@ -93,7 +93,7 @@ public ref class OCCTProxy
 
 public:
 
-    OCCTProxy(size_t ptsCount, size_t trianglesCount) {
+    OCCTProxy() {
         //points = new gp_Pnt[ptsCount];
         //triangles = new Poly_Triangle[trianglesCount];
     }
@@ -110,8 +110,6 @@ public:
     /// </summary>
     /// <param name="theWnd">System.IntPtr that contains the window handle (HWND) of the control</param>
     bool InitViewer(System::IntPtr);
-
-    bool ReadFile(IntPtr);
 
     /// <summary>
     /// Make dump of current view to file
@@ -1035,16 +1033,24 @@ public:
         myViewer() = NULL;
         myView() = NULL;
         myAISContext() = NULL;
-        points() = new NCollection_Vector<gp_Pnt>();
-        triangles() = new NCollection_Vector<Poly_Triangle>();
     }
 
-    void AddPoint(double x, double y, double z) {
-        points()->Append(gp_Pnt(x, y, z));
+    void SetPointsCount(int n) {
+        pointCount = n;
+        points = new gp_Pnt[pointCount];
     }
 
-    void AddTriangle(size_t idx1, size_t idx2, size_t idx3) {
-        triangles()->Append(Poly_Triangle(idx1,idx2,idx3));
+    void SetTrianglesCount(int n) {
+        triangleCount = n;
+        triangles = new Poly_Triangle[triangleCount];
+    }
+
+    void SetPoint(int targetIdx, double x, double y, double z) {
+        points[targetIdx] = gp_Pnt(x, y, z);
+    }
+
+    void SetTriangle(int targetIdx, int idx1, int idx2, int idx3) {
+        triangles[targetIdx] = Poly_Triangle(idx1, idx2, idx3);
     }
 
 private:
@@ -1054,6 +1060,12 @@ private:
     NCollection_Haft<Handle(AIS_InteractiveContext)> myAISContext;
     NCollection_Haft<Handle(OpenGl_GraphicDriver)> myGraphicDriver;
 
-    NCollection_Haft<Handle(NCollection_Vector<gp_Pnt>)> points;
-    NCollection_Haft<Handle(NCollection_Vector<Poly_Triangle>)> triangles ;
+    gp_Pnt* points;
+    Poly_Triangle* triangles;
+
+    int pointCount;
+    int triangleCount;
+
+    //NCollection_Haft<NCollection_Vector<Handle(gp_Pnt)>> points;
+    //NCollection_Haft<Handle(NCollection_Vector<Poly_Triangle>)> triangles ;
 };
