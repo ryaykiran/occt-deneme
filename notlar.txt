@@ -1,0 +1,15 @@
+opencascade kurulumu
+--------------------
+
+kendisi + 3rd party
+
+vstudio
+inc(lude) klasorlerini ekle
+lib klasorlerini ekle
+
+path env
+bin klasorlerini ekle
+
+vstudioyu yeniden baslat
+
+
